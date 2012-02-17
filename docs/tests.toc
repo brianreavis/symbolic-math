@@ -1,0 +1,31 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {subsection}{\numberline {1.1}Parsing}{2}
+\contentsline {subsection}{\numberline {1.2}Evaluation}{3}
+\contentsline {subsubsection}{\numberline {1.2.1}Optimization Rules}{4}
+\contentsline {subsection}{\numberline {1.3}Differentiation}{5}
+\contentsline {section}{\numberline {2}Odds and Ends}{5}
+\contentsline {subsection}{\numberline {2.1}Tree Typesetting}{5}
+\contentsline {subsection}{\numberline {2.2}Notes}{6}
+\contentsline {section}{\numberline {3}Test Cases}{6}
+\contentsline {subsection}{\numberline {3.1}Large Test}{11}
+\contentsline {section}{\numberline {4}Evaluation Tests}{11}
+\contentsline {section}{\numberline {5}Source Code}{13}
+\contentsline {subsection}{\numberline {5.1}main.cpp}{13}
+\contentsline {subsection}{\numberline {5.2}expr.h}{15}
+\contentsline {subsection}{\numberline {5.3}expr\_parse.h}{18}
+\contentsline {subsection}{\numberline {5.4}expr\_helpers.h}{19}
+\contentsline {subsection}{\numberline {5.5}expr\_latex.h}{20}
+\contentsline {subsection}{\numberline {5.6}expr\_operator.h}{22}
+\contentsline {subsection}{\numberline {5.7}expr\_variable.h}{23}
+\contentsline {subsection}{\numberline {5.8}expr\_tree.h}{24}
+\contentsline {subsection}{\numberline {5.9}expr\_tree\_evaluate.h}{27}
+\contentsline {subsection}{\numberline {5.10}expr\_tree\_differentiate.h}{28}
+\contentsline {subsection}{\numberline {5.11}expr\_tree\_optimize\_consolidate\_terms.h}{30}
+\contentsline {subsection}{\numberline {5.12}expr\_tree\_optimize\_consolidate\_factors.h}{32}
+\contentsline {subsection}{\numberline {5.13}expr\_tree\_optimize\_consolidate\_scalars.h}{33}
+\contentsline {subsection}{\numberline {5.14}expr\_tree\_optimize\_consolidate\_powers.h}{34}
+\contentsline {subsection}{\numberline {5.15}expr\_tree\_optimize\_consolidate\_redundant\_operators.h}{35}
+\contentsline {subsection}{\numberline {5.16}expr\_tree\_optimize\_const\_prod\_pow.h}{35}
+\contentsline {subsection}{\numberline {5.17}expr\_tree\_optimize\_distribute\_constants.h}{36}
+\contentsline {subsection}{\numberline {5.18}expr\_tree\_sort\_children.h}{37}
+\contentsline {subsection}{\numberline {5.19}expr\_function.h}{37}

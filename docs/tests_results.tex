@@ -1,0 +1,208 @@
+% --- ((x+2)^x)^(a*x) ---
+\item[(1)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{\left({{\left(x+2\right)}^{x}}\right)}^{\left(ax\right)}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ [.$\varowedge$ [.$\varoplus$ x 2 ] x ] [.$\varoast$ a x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)={{\left(x+2\right)}^{\left(a{{x}^{2}}\right)}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ [.$\varoplus$ x 2 ] [.$\varoast$ a [.$\varowedge$ x 2 ] ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=\varnothing$
+}
+% --- x^2+3*x^2 ---
+\item[(2)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{x}^{2}}+3{{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varowedge$ x 2 ] [.$\varoast$ 3 [.$\varowedge$ x 2 ] ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=4{{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 4 [.$\varowedge$ x 2 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=8x$
+	\vspace{1em}\newline\Tree [.$\varoast$ 8 x ]
+}
+% --- 6*x*x+2*x+5 ---
+\item[(3)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)=6xx+2x+5$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varoast$ 6 x x ] [.$\varoast$ 2 x ] 5 ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=6{{x}^{2}}+2x+5$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varoast$ 6 [.$\varowedge$ x 2 ] ] [.$\varoast$ 2 x ] 5 ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=12x+2$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varoast$ 12 x ] 2 ]
+}
+% --- x^2 ---
+\item[(4)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ x 2 ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)={{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ x 2 ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=2x$
+	\vspace{1em}\newline\Tree [.$\varoast$ 2 x ]
+}
+% --- (2*x+5*x)^2+(7*x)^2 ---
+\item[(5)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{\left(2x+5x\right)}^{2}}+{{\left(7x\right)}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varowedge$ [.$\varoplus$ [.$\varoast$ 2 x ] [.$\varoast$ 5 x ] ] 2 ] [.$\varowedge$ [.$\varoast$ 7 x ] 2 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=98{{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 98 [.$\varowedge$ x 2 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=196x$
+	\vspace{1em}\newline\Tree [.$\varoast$ 196 x ]
+}
+% --- (2*x+5*x)^2*(7*x)^3 ---
+\item[(6)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{\left(2x+5x\right)}^{2}}{{\left(7x\right)}^{3}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ [.$\varowedge$ [.$\varoplus$ [.$\varoast$ 2 x ] [.$\varoast$ 5 x ] ] 2 ] [.$\varowedge$ [.$\varoast$ 7 x ] 3 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=16807{{x}^{5}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 16807 [.$\varowedge$ x 5 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=84035{{x}^{4}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 84035 [.$\varowedge$ x 4 ] ]
+}
+% --- 2*x^2+(6*x+5)^2 ---
+\item[(7)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)=2{{x}^{2}}+{{\left(6x+5\right)}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varoast$ 2 [.$\varowedge$ x 2 ] ] [.$\varowedge$ [.$\varoplus$ [.$\varoast$ 6 x ] 5 ] 2 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)={{\left(6x+5\right)}^{2}}+2{{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varowedge$ [.$\varoplus$ [.$\varoast$ 6 x ] 5 ] 2 ] [.$\varoast$ 2 [.$\varowedge$ x 2 ] ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=76x+60$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varoast$ 76 x ] 60 ]
+}
+% --- e^2 ---
+\item[(8)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{e}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ e 2 ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)={{e}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ e 2 ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=0$
+	\vspace{1em}\newline\Tree [.0 ]
+}
+% --- e^(2*x) ---
+\item[(9)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{e}^{\left(2x\right)}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ e [.$\varoast$ 2 x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)={{e}^{\left(2x\right)}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ e [.$\varoast$ 2 x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=2{{e}^{\left(2x\right)}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 2 [.$\varowedge$ e [.$\varoast$ 2 x ] ] ]
+}
+% --- e^(2*x^3+x) ---
+\item[(10)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{e}^{\left(2{{x}^{3}}+x\right)}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ e [.$\varoplus$ [.$\varoast$ 2 [.$\varowedge$ x 3 ] ] x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)={{e}^{\left(2{{x}^{3}}+x\right)}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ e [.$\varoplus$ [.$\varoast$ 2 [.$\varowedge$ x 3 ] ] x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=(6{{x}^{2}}+1){{e}^{\left(2{{x}^{3}}+x\right)}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ [.$\varoplus$ [.$\varoast$ 6 [.$\varowedge$ x 2 ] ] 1 ] [.$\varowedge$ e [.$\varoplus$ [.$\varoast$ 2 [.$\varowedge$ x 3 ] ] x ] ] ]
+}
+% --- x*e^(5*x^2) ---
+\item[(11)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)=x{{e}^{\left(5{{x}^{2}}\right)}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ x [.$\varowedge$ e [.$\varoast$ 5 [.$\varowedge$ x 2 ] ] ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=x{{e}^{\left(5{{x}^{2}}\right)}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ x [.$\varowedge$ e [.$\varoast$ 5 [.$\varowedge$ x 2 ] ] ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=10{{x}^{2}}{{e}^{\left(5{{x}^{2}}\right)}}+{{e}^{\left(5{{x}^{2}}\right)}}$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varoast$ 10 [.$\varowedge$ x 2 ] [.$\varowedge$ e [.$\varoast$ 5 [.$\varowedge$ x 2 ] ] ] ] [.$\varowedge$ e [.$\varoast$ 5 [.$\varowedge$ x 2 ] ] ] ]
+}
+% --- 2*x^2*y*x^2 ---
+\item[(12)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)=2{{x}^{2}}y{{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 2 [.$\varowedge$ x 2 ] y [.$\varowedge$ x 2 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=2y{{x}^{4}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 2 y [.$\varowedge$ x 4 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=8y{{x}^{3}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 8 y [.$\varowedge$ x 3 ] ]
+}
+% --- x^5*x*x^2 ---
+\item[(13)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{x}^{5}}x{{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ [.$\varowedge$ x 5 ] x [.$\varowedge$ x 2 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)={{x}^{8}}$
+	\vspace{1em}\newline\Tree [.$\varowedge$ x 8 ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=8{{x}^{7}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ 8 [.$\varowedge$ x 7 ] ]
+}
+% --- ((x+2)^x)*(a*x) ---
+\item[(14)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)={{\left(x+2\right)}^{x}}ax$
+	\vspace{1em}\newline\Tree [.$\varoast$ [.$\varowedge$ [.$\varoplus$ x 2 ] x ] [.$\varoast$ a x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=ax{{\left(x+2\right)}^{x}}$
+	\vspace{1em}\newline\Tree [.$\varoast$ a x [.$\varowedge$ [.$\varoplus$ x 2 ] x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=\varnothing$
+}
+% --- ((x+2)*x)*(a*x) ---
+\item[(15)]
+\parbox[t]{\treeboxwidth}{
+	\noindent$f(x)=(x+2)xax$
+	\vspace{1em}\newline\Tree [.$\varoast$ [.$\varoast$ [.$\varoplus$ x 2 ] x ] [.$\varoast$ a x ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$g(x)=a{{x}^{2}}(x+2)$
+	\vspace{1em}\newline\Tree [.$\varoast$ a [.$\varowedge$ x 2 ] [.$\varoplus$ x 2 ] ]
+}
+\parbox[t]{\treeboxwidth}{
+	\noindent$\frac{d}{dx}g(x)=ax(2x+4)+a{{x}^{2}}$
+	\vspace{1em}\newline\Tree [.$\varoplus$ [.$\varoast$ a x [.$\varoplus$ [.$\varoast$ 2 x ] 4 ] ] [.$\varoast$ a [.$\varowedge$ x 2 ] ] ]
+}

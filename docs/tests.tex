@@ -1,0 +1,302 @@
+\documentclass{article}
+
+\title{Building \& Evaluating Symbolic Expression Trees}
+\author{Brian Reavis\\breavis1@uwyo.edu\\\\COSC2030}
+\date{December 3, 2010} %
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{verbatim}
+\definecolor{grey}{rgb}{0.5,0.5,0.5}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{listings}
+\lstset{
+	language=C++,
+	basicstyle=\footnotesize,
+	breaklines=true,
+	breakatwhitespace=false,
+	commentstyle=\color{grey},
+	tabsize=4
+}
+
+\usepackage{qtree}
+\qtreecentertrue
+\def\qtreepadding{3pt}
+\newcommand{\qleafhook}[1]{#1}
+\newcommand{\qlabelhook}{}
+\def\treeboxwidth{2in}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newenvironment{trials}
+{\begin{enumerate}
+  \setlength{\itemsep}{18pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}}
+{\end{enumerate}}
+
+
+\newenvironment{code}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\small\bfseries}
+{\end{list}}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+%\vspace{0}
+\begin{center}
+
+\vspace{1em}
+(no help received)
+\end{center}
+\clearpage
+\setlength{\parskip}{12pt}
+
+\section{Introduction}
+
+Computers do exceptionally well at math when given all the numbers. However, when equations are a mixture of number and {\em variables}, there's no simple way to evaluate them---for it's no longer a matter of rudimentary arithmetic; it's a matter of carefully applying mathematical rules to ``massage'' an expression/equation into its final form. Also, with expressions containing variables, one can perform a whole variety of operations: differentiation, integration, factoring, etc to arrive at an entirely-new expression. This type of evaluation that keeps variables intact is known as symbolic evaluation.
+
+I developed software to parse expressions and perform symbolic evaluation and differentiation of them (as one would do by hand in a Calculus class). I think it'd be really interesting to eventually use these symbolic expression trees and methods with evolutionary computing to derive equations that describe difficult-to-describe phenomena. The ``fitness'' of a tree could be evaluated using two crucial factors: (1) the complexity of the tree, with low-complexity being favored so that it doesn't grow into something gigantic, and (2) its actual ability to describe the situation. Over time, one could mutate elements of the tree. Each type of object in the tree would have differing probabilities of mutation. For instance, constant coefficients should probably be more likely to change than operators (\emph{i.e.} changing a ``$+$'' sign to multiplication ``$*$''). 
+
+\subsection{Parsing}
+
+In order to evaluate an expression, one must first parse the equation string (\emph{e.g.} \verb|2+a+x|) into a tree structure that the computer can work with. For each type of operator encountered in the string, a tree is constructed with the operator itself at the root and the terms as the children of the tree, as follows:
+
+\begin{center}
+\begin{tabular}{r c l r c l r c l}
+$2+a+x$ & $\rightarrow$ & \Tree [ .$\varoplus$ 2 a x ] & \hspace{2em}
+$x^2$ & $\rightarrow$ & \Tree [ .$\varowedge$ x 2 ] & \hspace{2em}
+$2*a*x$ & $\rightarrow$ & \Tree [ .$\varoast$ 2 a x ] \\
+\end{tabular}
+\end{center}
+
+Now suppose we have an expression that is a mixture of operators. Being careful to not violate order-of-operation rules, the tree becomes a multi-level tree:
+
+\begin{center}
+\begin{tabular}{r c l r c l}
+$2+a*x$ & $\rightarrow$ & \Tree [ .$\varoplus$ 2 [ .$\varoast$ a x ] ] & \hspace{2em}
+$(2+a)*x$ & $\rightarrow$ & \Tree [ .$\varoast$ [ .$\varoplus$ 2 a ] x ] \\
+\end{tabular}
+\end{center}
+
+The actual implementation of this gets a bit tricky when you must account for the possibility of many nested parentheses---because you don't want the operators within the parentheses affecting the splitting and construction of the current level. For example, if one has an equation like \verb|x+a*(5+2)|, the na\"{i}ve parser would likely produce:
+
+\begin{center}
+\hspace{-1in}\begin{tabular}{r r c l}
+\textbf{incorrect:} & $x+a*(5+2)$ & $\rightarrow$ & \Tree [ .$\varoplus$ x a*(5 2) ] \\
+\end{tabular}
+\end{center}
+
+\noindent However, when the parentheses are properly accounted for (by tracking opening and closing parentheses using a stack), the proper tree looks like:
+
+\begin{center}
+\hspace{-1in}\begin{tabular}{r r c l}
+\textbf{correct:} & $x+a*(5+2)$ & $\rightarrow$ & \Tree [ .$\varoplus$ x [ .$\varoast$ a [ .$\varoplus$ 5 2 ] ] ] \vspace{1em}\\ 
+\end{tabular}
+\end{center}
+
+At the moment, the program I developed relies on having no implied operators---so one must be pretty explicit. An expression like \verb|abx| will be parsed as if ``abx'' is a single variable. The proper way to write this expression would be \verb|a*b*x|. Here are some examples of expressions properly represented using no implied operators:\footnote{These expressions are used as the test cases for the program.}
+
+\begin{tabular}{r c l}
+\input{eqns}
+\end{tabular}
+
+\noindent One current limitation of the parser is not being able to recognize certain functions and notations. Using any of the following operations will result in undesired behavior:
+
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{r l}
+$\sin(x)$, $\cos(x)$, $\ldots$ & Trigonometric functions. \\
+$\log(x)$, $\ln(x)$, $\ldots$ & Logarithmic functions. \\
+$\langle x^2, x, 3 \rangle$ & Vector functions. \\
+\end{tabular}
+
+
+\subsection{Evaluation}
+\label{evaluation}
+
+Once an expression is parsed into its tree form, one of the most fundamental and useful operations that can be performed is merely evaluating it: determining the resulting expression when a variable in the tree is substituted by a number, or other expression. For example, if $f(x)=x^2$, then $f(3)=9$.
+
+To do this, the program recursively traverses the tree and looks for variables. For each one that is encountered, if variable name is identical to the one that's having a value provided for it, it is replaced by that value---with the value either being a provided number, variable, or expression tree. Once these substitutions are complete, the tree undergoes optimization (described in \S\ref{optimization} below) and has basic arithmetic performed.
+
+The evaluation routine can be found in \verb|expr_tree_evaluate.h|.
+
+\subsubsection{Optimization Rules}
+\label{optimization}
+
+A huge part of math is the basic process of working an expression into a simpler, more-digestable form. This process can't be skipped over---otherwise, operations like differentiation would produce very unsightly and incomprehensible results (which defeats the very purpose of this project). I programmed the following methods (each of which is fully functional):
+
+\begin{description}
+%#include "expr_tree_optimize_consolidate_terms.h"
+\item[Term Consolidation] When identical terms are added together, they can be expressed using a single term multiplied by a coefficient (the number of times the term is repeated). \newline(See \verb|expr_tree_optimize_consolidate_terms.h|)
+
+$x+2x+x+x \rightarrow 5x$
+
+
+%#include "expr_tree_optimize_consolidate_powers.h"
+\item[Power Consolidation] When a term or expression is raised to multiple powers, the power of the term/expression can be reduced to the product of the powers. (See \verb|expr_tree_optimize_consolidate_powers.h|)
+
+${\left((2+x)^x\right)}^x \rightarrow (2+x)^{x^2}$
+
+
+%#include "expr_tree_optimize_consolidate_factors.h"
+\item[Factor Consolidation] When a identical terms (possibly being raised to a power) are multiplied together, the terms can be reduced to a single term, raised to the sum of the powers of each.
+\newline(See \verb|expr_tree_optimize_consolidate_factors.h|)
+
+$x^2x^2 \rightarrow x^4$
+
+
+%#include "expr_tree_optimize_consolidate_scalars.h"
+\item[Scalar Consolidation]
+When multiple constants appear under a multiplication operation, they can be joined to form a single constant.  (See \verb|expr_tree_optimize_consolidate_scalars.h|)
+
+$2*5*x \rightarrow 10*x$
+
+%#include "expr_tree_optimize_const_prod_pow.h"
+\item[Constants Raised to Powers] 
+Whenever a constant is grouped with other variables in a multiplication operation, and all of this is raised to a constant power, the power can be applied to the constant base and moved out from the power operation. (See \verb|expr_tree_optimize_const_prod_pow.h|)
+
+$\left(2x\right)^2 \rightarrow 4x^2$
+
+
+%#include "expr_tree_optimize_distribute_constants.h"
+\item[Distributing Constants] If a sum of variables are being multiplied by a constant, the constant can be applied to each variable of the sum.
+(See \verb|expr_tree_optimize_distribute_constants.h|)
+
+$4\left(2+x\right) \rightarrow 8+4x$
+
+%#include "expr_tree_optimize_redundant_operators.h"
+\item[Redundant Operators] 
+Occasionally, operations on the tree will produce unnecessary or redundant tree levels. In order to not have the tree growing needlessly, nodes having child trees using the same operator will have their children moved up a level in the tree. Also, if a node only has one child, the child will take the place of the tree it's a part of---because all the primitive operators ($+$,$-$,$*$, etc) need two or more operands to produce a different result. (See \verb|expr_tree_optimize_redundant_operators.h|)
+
+\renewcommand{\arraystretch}{1}
+\begin{tabular}{r c l}
+\Tree [ .$\varoast$ x [ .$\varoast$ a b ] ] & $\rightarrow$ &
+\Tree [ .$\varoast$ x a b ] \\
+\end{tabular} 
+
+\end{description}
+
+\noindent The rules are applied to each node of the tree until either (1) optimization produces no further changes, or (2) a maximum iteration limit is reached.
+
+\subsection{Differentiation}
+
+Computing the rate of change of a function at point can be very useful in a variety of cases, so I decided to build in that feature. To compute derivatives, the program follows the basic differentiation rules (given the tree's operator):
+
+\begin{itemize}
+\item[$\varoplus$] Differentiate each child individually and add the computed derivatives together. 
+\item[$\varominus$] Differentiate each child individually and subtract the computed derivatives from the first. 
+\item[$\varoast$] For each child, calculate the derivative and multiply it by the other children. Add each of these results together.
+\item[$\varowedge$] With powers, a couple cases need to be considered:
+	\begin{itemize}
+	\item If the base is $e$, multiply the exponential by the derivative of its power.
+	\item If the power is a constant (e.g. $2$, $5$, $8$, etc), multiply the base by the power and subtract $1$ from the power.
+	\item If the power is not constant (e.g. $x$), this is quite a bit more difficult and hasn't been implemented yet. Support for functions ($\log$ in particular) must be added first.  
+	\end{itemize}
+\end{itemize}
+
+\noindent At a glance, differentiation is supported for the following class of functions:
+
+\def\diffeqnlength{3cm}
+\def\diffeqnpad{1em}
+
+\noindent\makebox[\diffeqnlength][r]{$2*x^2+4x$}\hspace{\diffeqnpad} Basic polynomials
+
+\noindent\makebox[\diffeqnlength][r]{$(2x+3)^5$}\hspace{\diffeqnpad} Functions raised to constant powers.
+
+\noindent\makebox[\diffeqnlength][r]{$e^{2x^2+4x}$}\hspace{\diffeqnpad} Exponentials
+
+\noindent\makebox[\diffeqnlength][r]{$(x^3+2)xe^{2x}$}\hspace{\diffeqnpad} Products
+
+\noindent Some cases that currently aren't supported include:
+
+\noindent\makebox[\diffeqnlength][r]{$x^{2x}$}\hspace{\diffeqnpad} Variables / expressions with non-constant powers (if the base is not $e$).
+
+\noindent\makebox[\diffeqnlength][r]{$\sin(x)$, $\cos(x)$, $\ldots$}\hspace{\diffeqnpad} Trigonometric functions.
+
+\noindent\makebox[\diffeqnlength][r]{$1/x$}\hspace{\diffeqnpad} Quotients.
+
+\noindent\makebox[\diffeqnlength][r]{$\log(x)$}\hspace{\diffeqnpad} Logarithms.
+
+\section{Odds and Ends}
+
+\subsection{Tree Typesetting}
+
+This writeup was built using \LaTeX,  a common document preparation system that allows one to write and assemble documents using plain text along with text commands. Using the {\sffamily qtree} package, trees can easily be typeset. Here is how to specify a tree with {\sffamily qtree} and the result:
+
+\begin{center}
+\verb|\Tree [.$\varoast$ 98 [.$\varowedge$ x 2 ] ]|  
+\end{center}
+\vspace{-2em}
+\parbox{\textwidth}{\Tree [.$\varoast$ 98 [.$\varowedge$ x 2 ] ]}
+
+\noindent The source code that generates {\sffamily qtree} tree markup can be found in \verb|expr_latex.h|.
+
+\subsection{Notes}
+\begin{itemize}
+\item I implemented expression trees using a polymorphic approach that I'm not particularly happy about, in hindsight. Each node in an expression can either be an \verb|ExpressionTree| or \verb|ExpressionVariable|---both of which inherit from \verb|ExpressionObject| (which defines common methods, like \verb|differentiate()|, \verb|evaluate()|, etc.) This has its advantages, in that all objects contain common fundamental methods which can be called regardless of whether it's an \verb|ExpressionTree| or \verb|ExpressionVariable|. Also, with each operating fairly differently, it makes sense to separate the logic.
+
+The primary disadvantage lies in the heavy use of dynamic casting (\verb|dynamic_cast<type*>(*obj)|) to determine type of an object in cases where the type represented by the \verb|ExpressionObject| \emph{does} matter (such as in the optimization routines). These dynamic casts are slow (because many runtime checks are performed) and visually clutter the code.
+
+A possible solution is to simply have expression trees and variables represented by a single class (i.e. an \verb|ExpressionObject| class that is not abstract as it is now). One could have an \verb|objectType| member that specifies if the object represents a tree or variable. While there would be class members that aren't applicable in certain cases (like \verb|children| if the object is a variable), the code would be much more more clear without a quagmire of dynamic casting.
+
+\item Integration needs to be added.
+
+\item Eventually it would be neat to add the ability to express equations, and be able to solve for variables by cleverly rearranging the tree. 
+
+\end{itemize}
+
+\section{Test Cases}
+\begin{itemize}
+\item[$f(x)$] The original function.
+\item[$g(x)$] The original function, having been optimized.
+\item[$\frac{d}{dx}g(x)$] The optimized differentiated function.
+\item[$\varnothing$] Indicates the expression is invalid or could not be computed.
+\end{itemize}
+\nopagebreak
+\begin{trials}
+\input{tests_results}
+\end{trials}
+
+\clearpage
+\subsection{Large Test}
+Just for kicks, I tested out differentiation on a large expression that would be fairly tedious to do by hand (one that involves many applications of the chain rule and product rule):
+\def\qtreepadding{1pt}
+\begin{center}
+\input{test_large}
+\end{center}
+As one can see, there are obviously some further optimizations that can be done on the tree. The needed optimization that strikes me first is the necessity of applying constant powers to children if the children are being multiplied together (i.e. $\left(x^5(x+2)^4\right)^2 \rightarrow x^{10}(x+2)^8$). Furthermore, expanding polynomials under constant powers would be beneficial. 
+
+\section{Evaluation Tests}
+\setlength{\mathindent}{0em}
+\setlength{\abovedisplayskip}{-\baselineskip}
+\setlength{\abovedisplayshortskip}{\abovedisplayskip}
+\begin{multicols}{2}
+\input{tests_results_eval}
+\end{multicols}
+
+\section{Source Code}
+\subsection{main.cpp} \nopagebreak\lstinputlisting{../main.cpp}
+\subsection{expr.h} \nopagebreak\lstinputlisting{../expr.h}
+\subsection{expr\_parse.h} \nopagebreak\lstinputlisting{../expr_parse.h}
+\subsection{expr\_helpers.h} \nopagebreak\lstinputlisting{../expr_helpers.h}
+\subsection{expr\_latex.h} \nopagebreak\lstinputlisting{../expr_latex.h}
+\subsection{expr\_operator.h} \nopagebreak\lstinputlisting{../expr_operator.h}
+\subsection{expr\_variable.h} \nopagebreak\lstinputlisting{../expr_variable.h}
+\subsection{expr\_tree.h} \nopagebreak\lstinputlisting{../expr_tree.h}
+\subsection{expr\_tree\_evaluate.h} \nopagebreak\lstinputlisting{../expr_tree_evaluate.h}
+\subsection{expr\_tree\_differentiate.h} \nopagebreak\lstinputlisting{../expr_tree_differentiate.h}
+\subsection{expr\_tree\_optimize\_consolidate\_terms.h} \nopagebreak\lstinputlisting{../expr_tree_optimize_consolidate_terms.h}
+\subsection{expr\_tree\_optimize\_consolidate\_factors.h} \nopagebreak\lstinputlisting{../expr_tree_optimize_consolidate_factors.h}
+\subsection{expr\_tree\_optimize\_consolidate\_scalars.h} \nopagebreak\lstinputlisting{../expr_tree_optimize_consolidate_scalars.h}
+\subsection{expr\_tree\_optimize\_consolidate\_powers.h} \nopagebreak\lstinputlisting{../expr_tree_optimize_consolidate_powers.h}
+\subsection{expr\_tree\_optimize\_consolidate\_redundant\_operators.h} \nopagebreak\lstinputlisting{../expr_tree_optimize_redundant_operators.h}
+\subsection{expr\_tree\_optimize\_const\_prod\_pow.h} \nopagebreak\lstinputlisting{../expr_tree_optimize_const_prod_pow.h}
+\subsection{expr\_tree\_optimize\_distribute\_constants.h} \nopagebreak\lstinputlisting{../expr_tree_optimize_distribute_constants.h}
+\subsection{expr\_tree\_sort\_children.h} \nopagebreak\lstinputlisting{../expr_tree_sort_children.h}
+\subsection{expr\_function.h} \nopagebreak\lstinputlisting{../expr_function.h}
+
+\end{document}

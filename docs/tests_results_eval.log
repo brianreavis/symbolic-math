@@ -1,0 +1,40 @@
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.12.3)  4 DEC 2010 21:55
+entering extended mode
+ \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**tests_results_eval.tex
+(./tests_results_eval.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ba
+sque, danish, dutch, finnish, french, german, ngerman, swissgerman, hungarian, 
+italian, bokmal, nynorsk, polish, portuguese, spanish, swedish, loaded.
+
+./tests_results_eval.tex:1: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 f
+     (x) &= {6}{x}^{2}+{2}{x}+{5}\\
+? 
+./tests_results_eval.tex:1: Emergency stop.
+ ...                                              
+                                                  
+l.1 f
+     (x) &= {6}{x}^{2}+{2}{x}+{5}\\
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+ 
+Here is how much of TeX's memory you used:
+ 6 strings out of 494749
+ 303 string characters out of 3170619
+ 45588 words of memory out of 3000000
+ 3316 multiletter control sequences out of 15000+200000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
+ 166 hyphenation exceptions out of 8191
+ 5i,0n,4p,56b,14s stack positions out of 5000i,500n,10000p,200000b,50000s
+./tests_results_eval.tex:1:  ==> Fatal error occurred, no output PDF file produ
+ced!

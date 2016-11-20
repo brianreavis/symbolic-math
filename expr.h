@@ -10,9 +10,10 @@
 // Features: 
 // - terms automatically sorted by complexity 
 // - 
-
+//#define _EXPR_H
 #ifndef _EXPR_H
 #define _EXPR_H
+#else
 
 #include <string>
 #include <stack>

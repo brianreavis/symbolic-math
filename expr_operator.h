@@ -8,7 +8,7 @@
  */
 
 #ifdef _EXPR_H
-
+#include <iostream>
 /** 
  * EXPRESSION OPERATOR
  * located at the root of an expression tree, expression
@@ -58,7 +58,7 @@ public:
 		stream << "(" << operation << ")" << endl;
 	}
 	void print(ostream &stream, int level){
-		cout << str_repeat(TAB, level);
+        std::cout << str_repeat(TAB, level);
 		print(stream);
 	}
 };

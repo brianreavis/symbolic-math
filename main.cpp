@@ -9,6 +9,13 @@
 #include "expr.h"
 using namespace std;
 
+// overload for a lazy std::cout experience with output to file.
+template <typename T>
+ofstream& operator<<(ofstream& out, T t){
+    std::cout << t;
+    return out;
+}
+
 int main(){
 	ifstream input;
 	ofstream output;
@@ -44,18 +51,18 @@ int main(){
 	string line;
 	int n = 0;
 	while (getline(input, line)){
-		ExpressionObject *expr = ExpressionObject::parse(line, false);
+        ExpressionObject *expr = ExpressionObject::parse(line, false);
 		if (!expr){
 			cout << "Failed to parse: " << line << endl;
 			continue;
 		}
 		++n;
 		
-		output << "% --- " << line << " ---" << endl;
+        output << "% --- " << line << " ---" << endl;
 		output << "\\item[(" << n << ")]" << endl;
 		
 		// original expression
-		output << "\\parbox[t]{\\treeboxwidth}{" << endl;
+        output << "\\parbox[t]{\\treeboxwidth}{" << endl;
 		output << "\t\\noindent$f(x)=" << expr->toLaTeX() << "$" << endl;
 		output << "\t\\vspace{1em}\\newline" << expr->toLaTeXTree() << endl;
 		output << "}" << endl;
@@ -108,8 +115,11 @@ int main(){
 		cout << line << endl;
 		
 	}
-	
-	ExpressionObject *large = ExpressionObject::parse("5*x+x^2*((x+2)*x^3)^4");
+    cout << endl << endl << endl << endl;
+    std::string func = "5*x+x^2*((x+2)*x^3)^4";
+    std::cout << "f(x) := " << func << endl;
+    ExpressionObject *large = ExpressionObject::parse(func);
+    large->print(cout);
 	output_large << "$f(x)=" << large->toLaTeX() << "$" << endl << endl; 
 	ExpressionObject *large_diff = large->differentiate("x");
 	output_large << "$f'(x)=" << large_diff->toLaTeX() << "$" << endl << endl;
